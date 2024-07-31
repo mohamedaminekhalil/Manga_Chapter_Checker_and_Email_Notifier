@@ -1,3 +1,5 @@
+import socket
+
 import requests
 from bs4 import BeautifulSoup
 from email.message import EmailMessage
@@ -8,8 +10,12 @@ import re
 sender = "mamoyeyy@gmail.com"
 pwd = "qkrdcvfatyjmyqlq"
 recipients = ["mxmxboy0@gmail.com", "twixoontheman@gmail.com"]
-OP_URL = "https://tcb-backup.bihar-mirchi.com/mangas/5/one-piece"
-JJK_URL = "https://tcb-backup.bihar-mirchi.com/mangas/4/jujutsu-kaisen"
+
+OP_URL = "https://tcbscans.me/mangas/5/one-piece"
+JJK_URL = "https://tcbscans.me/mangas/4/jujutsu-kaisen"
+
+OP_BACKUP_URL = "https://tcb-backup.bihar-mirchi.com/mangas/5/one-piece"
+JJK_BACKUP_URL = "https://tcb-backup.bihar-mirchi.com/mangas/4/jujutsu-kaisen"
 
 
 def retrieve_last_chap(URL, manga):
@@ -68,8 +74,15 @@ if __name__ == "__main__":
         except ValueError:
             latest_jjk_chap = float(latest_jjk_chap)
 
-    op_data = retrieve_last_chap(OP_URL, "ONE PIECE")
-    jjk_data = retrieve_last_chap(JJK_URL, "JUJUTSU KAISEN")
+    try:
+        op_data = retrieve_last_chap(OP_URL, "ONE PIECE")
+    except socket.gaierror:
+        op_data = retrieve_last_chap(OP_BACKUP_URL, "ONE PIECE")
+
+    try:
+        jjk_data = retrieve_last_chap(JJK_URL, "JUJUTSU KAISEN")
+    except socket.gaierror:
+        jjk_data = retrieve_last_chap(JJK_BACKUP_URL, "JUJUTSU KAISEN")
 
     if op_data["chapter"] != latest_op_chap:
         send_email(op_data)
