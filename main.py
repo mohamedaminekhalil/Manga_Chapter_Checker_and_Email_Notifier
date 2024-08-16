@@ -1,5 +1,6 @@
 import socket
-
+from datetime import datetime
+import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 from email.message import EmailMessage
@@ -61,6 +62,16 @@ def send_email(data):
         smtp.sendmail(sender, recipients, new_email.as_string())
 
 
+def add_to_logs(manga, chapter):
+    new_log = pd.DataFrame({
+        'MANGA': [manga],
+        'CHAPTER': [chapter],
+        'DATE': [datetime.now().strftime("%d %b %Y")],
+        'TIME': [datetime.now().strftime("%H:%M")]
+    })
+    return new_log
+
+
 if __name__ == "__main__":
     with open(file="chap.txt", mode="r") as f:
         latest_op_chap = f.readline().split(":")[1]
@@ -86,15 +97,19 @@ if __name__ == "__main__":
 
     if op_data["chapter"] != latest_op_chap:
         send_email(op_data)
+        add_to_logs(op_data["manga"], op_data["title"]).to_csv('logs.csv', mode='a', index=False, header=False)
         latest_op_chap = op_data["chapter"]
+        print("OP SUCCESS")
     else:
-        print("not yet op")
+        print("NO EMAIL BEEN SENT")
 
     if jjk_data["chapter"] != latest_jjk_chap:
         send_email(jjk_data)
+        add_to_logs(jjk_data["manga"], jjk_data["title"]).to_csv('logs.csv', mode='a', index=False, header=False)
         latest_jjk_chap = jjk_data["chapter"]
+        print("OP SUCCESS")
     else:
-        print("not yet jjk")
+        print("NO EMAIL BEEN SENT")
 
     with open(file="chap.txt", mode="w") as f:
         f.writelines(f"op:{latest_op_chap}\njjk:{latest_jjk_chap}")
