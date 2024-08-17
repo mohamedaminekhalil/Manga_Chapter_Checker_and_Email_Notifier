@@ -97,7 +97,7 @@ if __name__ == "__main__":
 
     if op_data["chapter"] != latest_op_chap:
         send_email(op_data)
-        add_to_logs(op_data["manga"], op_data["title"]).to_csv('logs.csv', mode='a', index=False, header=False)
+        add_to_logs(op_data["manga"], op_data["chapter"]).to_csv('logs.csv', mode='a', index=False, header=False)
         latest_op_chap = op_data["chapter"]
         print("OP SUCCESS")
     else:
@@ -105,9 +105,9 @@ if __name__ == "__main__":
 
     if jjk_data["chapter"] != latest_jjk_chap:
         send_email(jjk_data)
-        add_to_logs(jjk_data["manga"], jjk_data["title"]).to_csv('logs.csv', mode='a', index=False, header=False)
+        add_to_logs(jjk_data["manga"], jjk_data["chapter"]).to_csv('logs.csv', mode='a', index=False, header=False)
         latest_jjk_chap = jjk_data["chapter"]
-        print("OP SUCCESS")
+        print("JJK SUCCESS")
     else:
         print("NO EMAIL BEEN SENT")
 
