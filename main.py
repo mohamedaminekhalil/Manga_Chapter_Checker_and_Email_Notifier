@@ -8,9 +8,9 @@ import smtplib
 import ssl
 import re
 
-sender = "mamoyeyy@gmail.com"
-pwd = "qkrdcvfatyjmyqlq"
-recipients = ["mxmxboy0@gmail.com", "twixoontheman@gmail.com"]
+sender = "Your_email"
+pwd = "Password from app password created"
+recipients = ["emails_to_send_to"]
 
 OP_URL = "https://tcbscans.me/mangas/5/one-piece"
 JJK_URL = "https://tcbscans.me/mangas/4/jujutsu-kaisen"
